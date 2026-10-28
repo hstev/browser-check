@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Consulta la información técnica de tu navegador y dispositivo y compártela fácilmente con soporte técnico. Todo se procesa localmente." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0f19" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>Browser Diagnostics</title>
+    <script>
+      // Apply the theme before first paint to avoid a flash of the wrong theme.
+      (function () {
+        var pref = 'system';
+        try { pref = localStorage.getItem('bd:theme') || 'system'; } catch (e) {}
+        var dark = pref === 'dark' || (pref === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) document.documentElement.classList.add('dark');
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <div style="padding:24px;font-family:system-ui,sans-serif;max-width:640px;margin:0 auto">
+        <h1>JavaScript está desactivado</h1>
+        <p>Esta herramienta necesita JavaScript para leer la información de tu navegador. Actívalo en la configuración del navegador y recarga la página. Si soporte técnico te pidió este diagnóstico, indícales que JavaScript está desactivado.</p>
+      </div>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
