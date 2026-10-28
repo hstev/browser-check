@@ -1,4 +1,8 @@
-# Browser Diagnostics
+<p align="center">
+  <img src="docs/banner.png" alt="Browser Check: información de tu navegador, lista para soporte técnico" width="100%" />
+</p>
+
+# Browser Check
 
 Herramienta web de código abierto para que cualquier persona, sin conocimientos técnicos, consulte la información de su navegador y dispositivo y la envíe a soporte técnico: copiando un texto, descargando una captura PNG o un archivo JSON, o compartiéndola desde el móvil.
 
@@ -24,6 +28,7 @@ npm run dev        # http://localhost:5173
 | `npm run typecheck` | Comprobación de tipos con TypeScript                |
 | `npm run build`     | Comprobación de tipos + build de producción en `dist/` |
 | `npm run preview`   | Sirve `dist/` localmente                            |
+| `npm run images`    | Regenera la imagen social, el banner y los iconos   |
 
 ## Despliegue
 
@@ -34,6 +39,26 @@ npm run dev        # http://localhost:5173
 - **Cualquier hosting estático** (Nginx, S3, etc.): sube el contenido de `dist/`.
 
 Sirve el sitio por **HTTPS**. Por HTTP la página funciona, pero el navegador desactiva algunas APIs (portapapeles moderno, compartir nativo, Service Worker, Client Hints), y la página muestra un aviso cuando ocurre.
+
+## SEO y vista previa en redes sociales
+
+- `index.html` incluye título y descripción optimizados, URL canónica, Open Graph, X/Twitter Card (`summary_large_image`), datos estructurados JSON-LD (`WebApplication`), manifiesto web e iconos para Android/iOS.
+- Dentro de `#root` hay contenido estático (título y descripción), así los rastreadores que no ejecutan JavaScript también lo leen.
+- Las redes sociales exigen **URLs absolutas** para `og:image`. La URL pública se toma de `SITE_URL` o, si no existe, de `homepage` en `package.json` (`https://hstev.github.io/browser-check/`). En GitHub Actions se obtiene automáticamente de `actions/configure-pages`, así que también funciona con un dominio propio. En otros hostings:
+  ```bash
+  SITE_URL=https://check.midominio.com/ npm run build
+  ```
+- El build genera `robots.txt` y `sitemap.xml`. Si el sitio vive en un subdirectorio (por ejemplo, un proyecto de GitHub Pages), los buscadores solo leen el `robots.txt` de la raíz del dominio; envía el sitemap manualmente desde Google Search Console.
+- **Imágenes** (generadas desde plantillas HTML en `scripts/generate-images.mjs`):
+  | Archivo | Tamaño | Uso |
+  | --- | --- | --- |
+  | `public/og-image.png` | 1200×630 | Vista previa al compartir el enlace (Facebook, LinkedIn, WhatsApp, X, Slack…) |
+  | `docs/banner.png` | 1280×640 | Banner del README y *Social preview* del repositorio en GitHub (*Settings → General*) |
+  | `public/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | — | Manifiesto web / Android |
+  | `public/apple-touch-icon.png` | 180×180 | Pantalla de inicio en iOS |
+
+  Para regenerarlas: `npx playwright install chromium && npm run images`.
+- Para comprobar la vista previa después de desplegar: [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/), [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) u [opengraph.xyz](https://www.opengraph.xyz/). Algunas redes guardan la vista previa en caché; usa "Scrape again" tras cambiar la imagen.
 
 ## Configuración del campo de identificación
 
@@ -53,16 +78,16 @@ Sirve el sitio por **HTTPS**. Por HTTP la página funciona, pero el navegador de
 | Regional | Configuración regional, zona horaria, fecha/hora local, diferencia con UTC |
 | Entorno | URL y procedencia (**sin query string ni fragmento**), origen, protocolo, contexto seguro, `localStorage`/`sessionStorage` (probados con escritura segura), Service Worker, WebRTC |
 | Funciones | WebGL/WebGL 2, WebAssembly, IndexedDB, Clipboard API, Web Share, notificaciones, visor PDF, tema preferido, movimiento reducido |
-| Metadatos | ID de diagnóstico local (`BD-XXXX-XXXX`), fecha ISO 8601, versión de la aplicación |
+| Metadatos | ID de diagnóstico local (`BC-XXXX-XXXX`), fecha ISO 8601, versión de la aplicación |
 
 **No** se accede a cámara, micrófono, ubicación, contactos, contenido de cookies, contraseñas, tokens ni historial. No se pide ningún permiso al usuario. Las APIs que requieren permisos solo se detectan, nunca se invocan (por ejemplo, no se llama a `Notification.requestPermission`). Para comprobar WebGL se crea un contexto temporal que se libera de inmediato.
 
 ## Exportación
 
 - **Copiar información:** texto legible con encabezados por sección. Usa `navigator.clipboard.writeText` y, si falla, `document.execCommand('copy')`. Si ambos fallan, se abre un diálogo con el texto ya seleccionado para copiarlo a mano.
-- **Capturar pantalla:** genera un PNG de una **versión del reporte preparada para imprimir** (ancho fijo de 800 px, todas las secciones, incluidas las avanzadas, sin botones), con el nombre de la app, el ID y la fecha. Usa [`html-to-image`](https://github.com/bubkoo/html-to-image). No captura la pantalla del sistema ni la interfaz del navegador.
+- **Capturar pantalla:** genera un PNG de una **versión del reporte preparada para imprimir** (diseño horizontal de 1400 px en 3 columnas para que quepa en una pantalla sin desplazarse, a 2×–3× de resolución, con todas las secciones, incluidas las avanzadas, y sin botones), con el nombre de la app, el ID y la fecha. Usa [`html-to-image`](https://github.com/bubkoo/html-to-image). No captura la pantalla del sistema ni la interfaz del navegador.
 - **Copiar captura:** se muestra solo si existe `ClipboardItem`; si la escritura falla, la imagen se descarga.
-- **Descargar JSON:** valores sin traducir con su estado, por ejemplo `browser-diagnostics-INC-2026-1042.json`. Al nombre del archivo se le quitan los acentos y los caracteres no válidos.
+- **Descargar JSON:** valores sin traducir con su estado, por ejemplo `browser-check-INC-2026-1042.json`. Al nombre del archivo se le quitan los acentos y los caracteres no válidos.
 - **Compartir:** se muestra solo si existe `navigator.share`. Comparte el reporte en texto.
 
 ## Limitaciones de los navegadores

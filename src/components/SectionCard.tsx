@@ -7,9 +7,11 @@ interface Props {
   section: DiagnosticSection;
   /** Include fields flagged as advanced (used by the printable report). */
   includeAdvanced?: boolean;
+  /** Compact layout for the screenshot. */
+  dense?: boolean;
 }
 
-export function SectionCard({ section, includeAdvanced = false }: Props) {
+export function SectionCard({ section, includeAdvanced = false, dense = false }: Props) {
   const { t } = useI18n();
   const fields = includeAdvanced ? section.fields : section.fields.filter((f) => !f.advanced);
   if (fields.length === 0) return null;
@@ -17,8 +19,8 @@ export function SectionCard({ section, includeAdvanced = false }: Props) {
   const headingId = `section-${section.id}${includeAdvanced ? '-full' : ''}`;
 
   return (
-    <section aria-labelledby={headingId} className="card p-5 break-inside-avoid">
-      <header className="mb-2 flex items-start gap-3">
+    <section aria-labelledby={headingId} className={`card break-inside-avoid ${dense ? 'px-4 py-3' : 'p-5'}`}>
+      <header className={`flex gap-3 ${dense ? 'mb-1 items-center' : 'mb-2 items-start'}`}>
         <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
           <Icon aria-hidden className="size-[18px]" />
         </span>
@@ -26,10 +28,10 @@ export function SectionCard({ section, includeAdvanced = false }: Props) {
           <h2 id={headingId} className="text-base font-semibold tracking-tight">
             {t.sections[section.id]}
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">{t.sectionDescriptions[section.id]}</p>
+          {!dense && <p className="text-sm text-slate-500 dark:text-slate-400">{t.sectionDescriptions[section.id]}</p>}
         </div>
       </header>
-      <FieldList fields={fields} />
+      <FieldList fields={fields} dense={dense} />
     </section>
   );
 }

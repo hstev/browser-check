@@ -1,4 +1,5 @@
-import { CircleCheck, CircleDashed, CircleHelp, Stethoscope } from 'lucide-react';
+import { CircleCheck, CircleDashed, CircleHelp } from 'lucide-react';
+import { BrandMark } from './BrandMark';
 import { forwardRef } from 'react';
 import { useI18n } from '../i18n';
 import type { CustomIdentifier, DiagnosticReport } from '../lib/diagnostics/types';
@@ -6,8 +7,12 @@ import { identifierLabel, identifierValue } from '../lib/report';
 import { SectionCard } from './SectionCard';
 import { Summary } from './Summary';
 
-/** Width of the generated image (CSS px). Fixed so the PNG looks the same on phones and desktops. */
-export const REPORT_SHEET_WIDTH = 800;
+/**
+ * Width of the generated image (CSS px). Fixed so the PNG looks the same on phones and desktops,
+ * and wide enough for a multi-column layout: a landscape image stays readable when a viewer
+ * fits it to the screen, whereas a tall one gets shrunk until the text blurs.
+ */
+export const REPORT_SHEET_WIDTH = 1400;
 
 interface Props {
   report: DiagnosticReport;
@@ -26,13 +31,11 @@ export const ReportSheet = forwardRef<HTMLDivElement, Props>(function ReportShee
     <div
       ref={ref}
       style={{ width: REPORT_SHEET_WIDTH }}
-      className="space-y-5 bg-slate-50 p-10 font-sans text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100"
+      className="space-y-4 bg-slate-50 p-8 font-sans text-slate-900 dark:bg-[#0b0f19] dark:text-slate-100"
     >
-      <header className="flex items-start justify-between gap-6 border-b border-slate-200 pb-5 dark:border-slate-800">
+      <header className="flex items-center justify-between gap-6 border-b border-slate-200 pb-4 dark:border-slate-800">
         <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-xl bg-indigo-600 text-white">
-            <Stethoscope aria-hidden className="size-5" />
-          </span>
+          <BrandMark className="size-10" />
           <div>
             <p className="text-xs font-medium tracking-wide text-slate-500 uppercase dark:text-slate-400">{t.app.name}</p>
             <h1 className="text-xl font-semibold tracking-tight">{t.report.title}</h1>
@@ -54,20 +57,22 @@ export const ReportSheet = forwardRef<HTMLDivElement, Props>(function ReportShee
         </dl>
       </header>
 
-      <div className="rounded-2xl border-2 border-indigo-500/60 bg-white p-5 dark:bg-slate-900">
-        <p className="text-sm font-medium text-indigo-700 dark:text-indigo-300">{identifierLabel(identifier, t)}</p>
+      <div className="flex items-baseline gap-4 rounded-2xl border-2 border-indigo-500/60 bg-white px-5 py-3 dark:bg-slate-900">
+        <p className="shrink-0 text-sm font-medium text-indigo-700 dark:text-indigo-300">{identifierLabel(identifier, t)}</p>
         <p
-          className={`mt-1 text-2xl font-semibold break-words [overflow-wrap:anywhere] ${hasValue ? '' : 'text-slate-400 italic dark:text-slate-500'}`}
+          className={`min-w-0 text-xl font-semibold break-words [overflow-wrap:anywhere] ${hasValue ? '' : 'text-slate-400 italic dark:text-slate-500'}`}
         >
           {identifierValue(identifier, t)}
         </p>
       </div>
 
-      <Summary report={report} headingLevel={3} />
+      <Summary report={report} headingLevel={3} compact />
 
-      {report.sections.map((section) => (
-        <SectionCard key={section.id} section={section} includeAdvanced />
-      ))}
+      <div className="columns-3 gap-4 [&>*]:mb-4">
+        {report.sections.map((section) => (
+          <SectionCard key={section.id} section={section} includeAdvanced dense />
+        ))}
+      </div>
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-4 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
         <p>{t.report.footer}</p>

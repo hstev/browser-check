@@ -3,18 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Consulta la información técnica de tu navegador y dispositivo y compártela fácilmente con soporte técnico. Todo se procesa localmente." />
+    <title>Browser Check · Diagnóstico del navegador para soporte técnico</title>
+    <meta name="description" content="Consulta gratis la información de tu navegador y dispositivo (versión, sistema operativo, pantalla, idioma, zona horaria) y envíala a soporte técnico en un clic. 100 % local, sin registro." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="%SITE_URL%" />
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp, Slack, Discord, Telegram…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Browser Check" />
+    <meta property="og:url" content="%SITE_URL%" />
+    <meta property="og:title" content="Browser Check · Información de tu navegador para soporte técnico" />
+    <meta property="og:description" content="Revisa tu navegador, sistema operativo y pantalla, y envía el diagnóstico a soporte como texto, imagen o JSON. Todo se procesa en tu dispositivo." />
+    <meta property="og:image" content="%SITE_URL%og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Browser Check: tarjeta de diagnóstico con navegador, sistema operativo, pantalla y zona horaria, junto a un ticket de soporte." />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- X / Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Browser Check · Información de tu navegador para soporte técnico" />
+    <meta name="twitter:description" content="Revisa tu navegador y dispositivo y envía el diagnóstico a soporte en un clic. 100 % local." />
+    <meta name="twitter:image" content="%SITE_URL%og-image.png" />
+    <meta name="twitter:image:alt" content="Browser Check: tarjeta de diagnóstico del navegador junto a un ticket de soporte." />
+
+    <!-- Icons & PWA -->
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="application-name" content="Browser Check" />
+    <meta name="apple-mobile-web-app-title" content="Browser Check" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="referrer" content="no-referrer" />
     <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0b0f19" media="(prefers-color-scheme: dark)" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <title>Browser Diagnostics</title>
+    <meta name="referrer" content="no-referrer" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Browser Check",
+        "url": "%SITE_URL%",
+        "image": "%SITE_URL%og-image.png",
+        "description": "Herramienta gratuita y de código abierto para consultar la información técnica del navegador y el dispositivo y compartirla con soporte técnico. Los datos se procesan localmente.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "inLanguage": ["es", "en"],
+        "isAccessibleForFree": true,
+        "license": "https://opensource.org/licenses/MIT",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "featureList": [
+          "Versión del navegador y sistema operativo",
+          "Resolución de pantalla y tamaño de ventana",
+          "Idioma, zona horaria y configuración regional",
+          "Copiar informe, captura PNG y exportación JSON",
+          "Procesamiento 100 % local, sin servidores"
+        ]
+      }
+    </script>
+
     <script>
       // Apply the theme before first paint to avoid a flash of the wrong theme.
       (function () {
         var pref = 'system';
-        try { pref = localStorage.getItem('bd:theme') || 'system'; } catch (e) {}
+        try { pref = localStorage.getItem('bc:theme') || 'system'; } catch (e) {}
         var dark = pref === 'dark' || (pref === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
         if (dark) document.documentElement.classList.add('dark');
       })();
@@ -27,7 +83,13 @@
         <p>Esta herramienta necesita JavaScript para leer la información de tu navegador. Actívalo en la configuración del navegador y recarga la página. Si soporte técnico te pidió este diagnóstico, indícales que JavaScript está desactivado.</p>
       </div>
     </noscript>
-    <div id="root"></div>
+    <!-- Static content for crawlers and link previews; React replaces it on load. -->
+    <div id="root">
+      <main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
+        <h1 class="max-w-2xl text-2xl font-semibold tracking-tight text-balance sm:text-3xl">Información de tu navegador y dispositivo, lista para enviar a soporte técnico.</h1>
+        <p class="mt-2 max-w-2xl text-slate-600 dark:text-slate-400">Browser Check muestra la versión de tu navegador, el sistema operativo, la resolución de pantalla, el idioma y la zona horaria. Cópialo, descárgalo como imagen PNG o JSON y envíalo a soporte. Los datos se procesan localmente y no se envían a ningún servidor.</p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

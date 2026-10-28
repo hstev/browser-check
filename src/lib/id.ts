@@ -12,8 +12,8 @@ function randomBytes(length: number): Uint8Array {
   return bytes;
 }
 
-/** Short, locally generated identifier such as `BD-7K3F-9QX2`. Not derived from any device data. */
+/** Short, locally generated identifier such as `BC-7K3F-9QX2`. Not derived from any device data. */
 export function generateDiagnosticId(): string {
   const chars = Array.from(randomBytes(8), (b) => ALPHABET[b % ALPHABET.length]).join('');
-  return `BD-${chars.slice(0, 4)}-${chars.slice(4)}`;
+  return `BC-${chars.slice(0, 4)}-${chars.slice(4)}`;
 }

@@ -72,7 +72,7 @@ export function testStorage(getStorage: () => Storage | null | undefined): boole
   try {
     const storage = getStorage();
     if (!storage) return false;
-    const key = '__bd_probe__';
+    const key = '__bc_probe__';
     storage.setItem(key, '1');
     const ok = storage.getItem(key) === '1';
     storage.removeItem(key);

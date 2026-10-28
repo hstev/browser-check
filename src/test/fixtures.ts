@@ -1,7 +1,7 @@
 import type { DiagnosticReport } from '../lib/diagnostics/types';
 
 export const sampleReport: DiagnosticReport = {
-  meta: { diagnosticId: 'BD-AB12-CD34', generatedAt: '2026-10-28T15:30:00.000Z', appVersion: '1.0.0' },
+  meta: { diagnosticId: 'BC-AB12-CD34', generatedAt: '2026-10-28T15:30:00.000Z', appVersion: '1.0.0' },
   sections: [
     {
       id: 'browser',

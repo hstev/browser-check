@@ -3,7 +3,7 @@ import { safeStorage } from '../lib/storage';
 
 export type ThemePreference = 'light' | 'dark' | 'system';
 
-const STORAGE_KEY = 'bd:theme';
+const STORAGE_KEY = 'bc:theme';
 const QUERY = '(prefers-color-scheme: dark)';
 
 function systemPrefersDark(): boolean {

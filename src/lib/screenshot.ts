@@ -2,11 +2,16 @@ import { toCanvas } from 'html-to-image';
 
 /** Mobile Safari refuses to allocate canvases larger than ~16.7 MP. */
 const MAX_CANVAS_PIXELS = 16_000_000;
-const MAX_PIXEL_RATIO = 2;
+/**
+ * Render at 2× even on standard-density screens: the image is usually viewed
+ * zoomed in, or on a support agent's high-DPI display, where 1× looks blurry.
+ */
+const MIN_PIXEL_RATIO = 2;
+const MAX_PIXEL_RATIO = 3;
 
 /** Picks a pixel ratio that keeps the image sharp without exceeding canvas limits. */
 export function computePixelRatio(width: number, height: number, devicePixelRatio = 1): number {
-  const desired = Math.min(MAX_PIXEL_RATIO, Math.max(1, devicePixelRatio || 1));
+  const desired = Math.min(MAX_PIXEL_RATIO, Math.max(MIN_PIXEL_RATIO, devicePixelRatio || 1));
   const area = Math.max(1, width * height);
   const maxByArea = Math.sqrt(MAX_CANVAS_PIXELS / area);
   return Math.max(0.5, Math.min(desired, maxByArea));

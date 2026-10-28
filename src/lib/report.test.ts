@@ -21,7 +21,7 @@ describe('buildTextReport', () => {
   it('includes the custom identifier, metadata and every section', () => {
     const text = buildTextReport(sampleReport, { label: 'Ticket de soporte', value: 'INC-2026-1042' }, es);
     expect(text).toContain('Ticket de soporte: INC-2026-1042');
-    expect(text).toContain('ID de diagnóstico: BD-AB12-CD34');
+    expect(text).toContain('ID de diagnóstico: BC-AB12-CD34');
     expect(text).toContain('Generado (UTC): 2026-10-28T15:30:00.000Z');
     expect(text).toContain('Versión de la aplicación: 1.0.0');
     expect(text).toContain('NAVEGADOR\n---------');

@@ -4,7 +4,7 @@ export const en: Dictionary = {
   locale: 'en',
   languageName: 'English',
   app: {
-    name: 'Browser Diagnostics',
+    name: 'Browser Check',
     tagline: 'Your browser and device information, ready to send to technical support.',
     intro:
       'If technical support asked you for this information, type your ticket number or your name below and use one of the buttons to send it.',
@@ -162,7 +162,7 @@ export const en: Dictionary = {
   report: {
     title: 'Browser diagnostics',
     estimatedSuffix: '(estimated)',
-    footer: 'Generated locally with Browser Diagnostics. No data was sent to any server.',
+    footer: 'Generated locally with Browser Check. No data was sent to any server.',
   },
   advanced: {
     title: 'Advanced technical information',

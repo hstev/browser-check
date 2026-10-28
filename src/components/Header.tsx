@@ -1,4 +1,5 @@
-import { Monitor, Moon, Stethoscope, Sun } from 'lucide-react';
+import { Monitor, Moon, Sun } from 'lucide-react';
+import { BrandMark } from './BrandMark';
 import type { ThemePreference } from '../hooks/useTheme';
 import { dictionaries, useI18n, type Locale } from '../i18n';
 
@@ -20,9 +21,7 @@ export function Header({ theme, onThemeChange }: Props) {
     <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-[#0b0f19]/80">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <div className="flex min-w-0 items-center gap-2.5">
-          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-indigo-600 text-white">
-            <Stethoscope aria-hidden className="size-[18px]" />
-          </span>
+          <BrandMark />
           <span className="truncate text-sm font-semibold tracking-tight">{t.app.name}</span>
         </div>
 

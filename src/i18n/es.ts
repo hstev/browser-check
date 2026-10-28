@@ -4,7 +4,7 @@ export const es = {
   locale: 'es',
   languageName: 'Español',
   app: {
-    name: 'Browser Diagnostics',
+    name: 'Browser Check',
     tagline: 'Información de tu navegador y dispositivo, lista para enviar a soporte técnico.',
     intro:
       'Si soporte técnico te pidió esta información, escribe tu número de ticket o tu nombre abajo y usa uno de los botones para enviarla.',
@@ -162,7 +162,7 @@ export const es = {
   report: {
     title: 'Diagnóstico del navegador',
     estimatedSuffix: '(estimado)',
-    footer: 'Generado localmente con Browser Diagnostics. Ningún dato se envió a un servidor.',
+    footer: 'Generado localmente con Browser Check. Ningún dato se envió a un servidor.',
   },
   advanced: {
     title: 'Información técnica avanzada',

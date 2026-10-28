@@ -8,7 +8,7 @@ export const dictionaries = { es, en } satisfies Record<string, Dictionary>;
 export type Locale = keyof typeof dictionaries;
 export const DEFAULT_LOCALE: Locale = 'es';
 
-const STORAGE_KEY = 'bd:locale';
+const STORAGE_KEY = 'bc:locale';
 
 interface I18nContextValue {
   locale: Locale;

@@ -60,9 +60,9 @@ const NOW = new Date('2026-10-28T15:30:00.000Z');
 
 describe('collectDiagnostics', () => {
   it('collects detected values and marks UA-derived ones as estimates', async () => {
-    const r = await collectDiagnostics(fakeWindow(), { now: NOW, appVersion: '1.2.3', diagnosticId: 'BD-TEST-0001' });
+    const r = await collectDiagnostics(fakeWindow(), { now: NOW, appVersion: '1.2.3', diagnosticId: 'BC-TEST-0001' });
 
-    expect(r.meta).toEqual({ diagnosticId: 'BD-TEST-0001', generatedAt: '2026-10-28T15:30:00.000Z', appVersion: '1.2.3' });
+    expect(r.meta).toEqual({ diagnosticId: 'BC-TEST-0001', generatedAt: '2026-10-28T15:30:00.000Z', appVersion: '1.2.3' });
     expect(get(r, 'browserName')).toMatchObject({ value: 'Google Chrome', status: 'estimated' });
     expect(get(r, 'browserVersion')).toMatchObject({ value: '130.0.0.0', status: 'estimated' });
     expect(get(r, 'operatingSystem')).toMatchObject({ value: 'Windows 10 / 11', status: 'estimated' });
@@ -172,7 +172,7 @@ describe('collectDiagnostics', () => {
 
   it('generates a new ID only when none is provided', async () => {
     const r = await collectDiagnostics(fakeWindow(), { now: NOW });
-    expect(r.meta.diagnosticId).toMatch(/^BD-[0-9A-HJKMNP-TV-Z]{4}-[0-9A-HJKMNP-TV-Z]{4}$/);
+    expect(r.meta.diagnosticId).toMatch(/^BC-[0-9A-HJKMNP-TV-Z]{4}-[0-9A-HJKMNP-TV-Z]{4}$/);
   });
 });
 

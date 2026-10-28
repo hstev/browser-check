@@ -92,7 +92,7 @@ describe('App', () => {
     await waitFor(() => expect(writeText).toHaveBeenCalledOnce());
     const text = writeText.mock.calls[0][0] as string;
     expect(text).toContain('Identificador personalizado: INC-2026-1042');
-    expect(text).toMatch(/ID de diagnóstico: BD-/);
+    expect(text).toMatch(/ID de diagnóstico: BC-/);
     expect(text).toContain('User-Agent:');
     expect(await screen.findByText(/Información copiada/)).toBeInTheDocument();
   });
@@ -127,7 +127,7 @@ describe('App', () => {
     await user.click(screen.getByRole('button', { name: /Descargar JSON/ }));
 
     expect(click).toHaveBeenCalledOnce();
-    expect((click.mock.contexts[0] as HTMLAnchorElement).download).toBe('browser-diagnostics-Ticket-12345-Jose.json');
+    expect((click.mock.contexts[0] as HTMLAnchorElement).download).toBe('browser-check-Ticket-12345-Jose.json');
     const json = JSON.parse(await createObjectURL.mock.calls[0][0].text());
     expect(json.customIdentifier).toEqual({ label: 'Identificador personalizado', value: 'Ticket #12345 / José' });
     expect(json.sections.browser.userAgent.status).toBe('detected');
@@ -143,7 +143,7 @@ describe('App', () => {
     URL.revokeObjectURL = vi.fn();
     const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
     window.innerWidth = viewport;
-    if (theme === 'dark') localStorage.setItem('bd:theme', 'dark');
+    if (theme === 'dark') localStorage.setItem('bc:theme', 'dark');
 
     renderApp();
     await screen.findByRole('heading', { name: 'Tu dispositivo' });
@@ -153,14 +153,14 @@ describe('App', () => {
     await user.click(screen.getByRole('button', { name: /Capturar pantalla/ }));
 
     await waitFor(() => expect(click).toHaveBeenCalledOnce());
-    expect((click.mock.contexts[0] as HTMLAnchorElement).download).toMatch(/^browser-diagnostics-INC-2026-1042-.+\.png$/);
+    expect((click.mock.contexts[0] as HTMLAnchorElement).download).toMatch(/^browser-check-INC-2026-1042-.+\.png$/);
 
     const { node, html, options } = captured.at(-1)!;
     // Fixed-width sheet, independent of the viewport.
     expect(node.style.width).toBe(`${REPORT_SHEET_WIDTH}px`);
     // Report header, identifier, and every section including advanced fields.
-    expect(html).toContain('Browser Diagnostics');
-    expect(html).toMatch(/BD-[0-9A-Z]{4}-[0-9A-Z]{4}/);
+    expect(html).toContain('Browser Check');
+    expect(html).toMatch(/BC-[0-9A-Z]{4}-[0-9A-Z]{4}/);
     expect(html).toMatch(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/);
     expect(html).toContain(LONG_VALUE);
     expect(html).toContain('[overflow-wrap:anywhere]');

@@ -1,0 +1,11 @@
+/** Browser window with a check mark — same artwork as `public/favicon.svg`. */
+export function BrandMark({ className = 'size-8' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" className={`shrink-0 ${className}`}>
+      <rect width="32" height="32" rx="8" fill="#4f46e5" />
+      <path d="M8 11.5A2.5 2.5 0 0 1 10.5 9h11a2.5 2.5 0 0 1 2.5 2.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 8 20.5z" fill="none" stroke="#fff" strokeWidth="2" />
+      <path d="M8 13h16" stroke="#fff" strokeWidth="2" />
+      <path d="m12.5 17.5 2 2 4-4" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

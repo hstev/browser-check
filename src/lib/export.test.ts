@@ -7,9 +7,9 @@ describe('buildJson', () => {
   it('exports raw values with their status and the custom identifier', () => {
     const json = buildJson(sampleReport, { label: 'Ticket de soporte', value: ' INC-2026-1042 ' }, 'Default');
     expect(json.schemaVersion).toBe(1);
-    expect(json.diagnosticId).toBe('BD-AB12-CD34');
+    expect(json.diagnosticId).toBe('BC-AB12-CD34');
     expect(json.generatedAt).toBe('2026-10-28T15:30:00.000Z');
-    expect(json.app).toEqual({ name: 'Browser Diagnostics', version: '1.0.0' });
+    expect(json.app).toEqual({ name: 'Browser Check', version: '1.0.0' });
     expect(json.customIdentifier).toEqual({ label: 'Ticket de soporte', value: 'INC-2026-1042' });
     expect(json.sections.browser.browserName).toEqual({ value: 'Firefox', status: 'estimated' });
     expect(json.sections.device.deviceMemory).toEqual({ value: null, status: 'unavailable' });
@@ -50,11 +50,11 @@ describe('sanitizeFilenamePart', () => {
 
 describe('buildFilename', () => {
   it('uses the identifier when present', () => {
-    expect(buildFilename('INC-2026-1042', 'BD-AB12-CD34', 'json')).toBe('browser-diagnostics-INC-2026-1042.json');
+    expect(buildFilename('INC-2026-1042', 'BC-AB12-CD34', 'json')).toBe('browser-check-INC-2026-1042.json');
   });
   it('falls back to the diagnostic ID', () => {
-    expect(buildFilename('', 'BD-AB12-CD34', 'png')).toBe('browser-diagnostics-BD-AB12-CD34.png');
-    expect(buildFilename('***', 'BD-AB12-CD34', 'png')).toBe('browser-diagnostics-BD-AB12-CD34.png');
+    expect(buildFilename('', 'BC-AB12-CD34', 'png')).toBe('browser-check-BC-AB12-CD34.png');
+    expect(buildFilename('***', 'BC-AB12-CD34', 'png')).toBe('browser-check-BC-AB12-CD34.png');
   });
 });
 
@@ -68,11 +68,11 @@ describe('downloadJson', () => {
     vi.stubGlobal('URL', Object.assign(URL, { createObjectURL, revokeObjectURL }));
     const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
 
-    downloadJson({ hello: 'mundo' }, 'browser-diagnostics-x.json');
+    downloadJson({ hello: 'mundo' }, 'browser-check-x.json');
 
     expect(click).toHaveBeenCalledOnce();
     const anchor = click.mock.contexts[0] as HTMLAnchorElement;
-    expect(anchor.download).toBe('browser-diagnostics-x.json');
+    expect(anchor.download).toBe('browser-check-x.json');
     const blob = (createObjectURL.mock.calls[0] as unknown as [Blob])[0];
     expect(blob.type).toBe('application/json');
     expect(JSON.parse(await blob.text())).toEqual({ hello: 'mundo' });

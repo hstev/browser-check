@@ -31,17 +31,21 @@ export function StatusBadge({ status, compact = false }: { status: FieldStatus; 
   );
 }
 
-export function FieldList({ fields }: { fields: DiagnosticField[] }) {
+/** `dense`: label and value always side by side with tighter rows (used by the screenshot). */
+export function FieldList({ fields, dense = false }: { fields: DiagnosticField[]; dense?: boolean }) {
   const { t } = useI18n();
+  const rowClass = dense
+    ? 'grid grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-3 py-1.5'
+    : 'grid gap-1 py-2.5 @md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] @md:gap-4';
   return (
     <dl className="@container divide-y divide-slate-100 dark:divide-slate-800">
       {fields.map((f) => {
         const unavailable = f.status === 'unavailable';
         const mono = MONO_FIELDS.has(f.id);
         return (
-          <div key={f.id} className="grid gap-1 py-2.5 @md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] @md:gap-4">
+          <div key={f.id} className={rowClass}>
             <dt className="text-sm text-slate-500 dark:text-slate-400">{t.fields[f.id]}</dt>
-            <dd className="flex min-w-0 items-start justify-between gap-2 @md:justify-start">
+            <dd className={`flex min-w-0 items-start gap-2 ${dense ? 'justify-start' : 'justify-between @md:justify-start'}`}>
               <span
                 className={[
                   'min-w-0 text-sm break-words [overflow-wrap:anywhere]',

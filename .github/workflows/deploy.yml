@@ -23,9 +23,14 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+      - id: pages
+        uses: actions/configure-pages@v5
       - run: npm ci
       - run: npm test
+      # Absolute URL for canonical/Open Graph tags; also correct with a custom domain.
       - run: npm run build
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

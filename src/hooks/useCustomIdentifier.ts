@@ -6,7 +6,7 @@ export const IDENTIFIER_MAX_LENGTH = 150;
 export const LABEL_MAX_LENGTH = 60;
 
 // sessionStorage keeps the value across accidental reloads but is cleared when the tab closes.
-const STORAGE_KEY = 'bd:identifier';
+const STORAGE_KEY = 'bc:identifier';
 
 /**
  * Support teams can prefill the field with a link such as

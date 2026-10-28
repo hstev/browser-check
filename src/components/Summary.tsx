@@ -19,7 +19,14 @@ function deviceIcon(field?: DiagnosticField): LucideIcon {
   return Laptop;
 }
 
-export function Summary({ report, headingLevel = 2 }: { report: DiagnosticReport; headingLevel?: 2 | 3 }) {
+interface Props {
+  report: DiagnosticReport;
+  headingLevel?: 2 | 3;
+  /** Hide tile icons so 8 tiles fit in one row (used by the screenshot). */
+  compact?: boolean;
+}
+
+export function Summary({ report, headingLevel = 2, compact = false }: Props) {
   const { t } = useI18n();
   const get = (id: DiagnosticField['id']) => findField(report, id);
 
@@ -65,12 +72,13 @@ export function Summary({ report, headingLevel = 2 }: { report: DiagnosticReport
       <Heading id={`summary-heading-${headingLevel}`} className="mb-3 text-lg font-semibold tracking-tight">
         {t.summary.title}
       </Heading>
-      <ul className="grid grid-cols-1 gap-3 @sm:grid-cols-2 @2xl:grid-cols-4">
+      <ul className="grid grid-cols-1 gap-3 @sm:grid-cols-2 @2xl:grid-cols-4 @7xl:grid-cols-8">
         {tiles.map(({ key, label, value, status, icon: Icon, tone }) => (
-          <li key={key} className="card flex items-start gap-3 p-4">
+          <li key={key} className={`card flex items-start gap-3 ${compact ? 'px-3.5 py-3' : 'p-4'}`}>
             <span
               className={[
-                'grid size-9 shrink-0 place-items-center rounded-xl',
+                'size-9 shrink-0 place-items-center rounded-xl',
+                compact ? 'hidden' : 'grid',
                 tone === 'ok'
                   ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
                   : tone === 'warn'
@@ -88,7 +96,7 @@ export function Summary({ report, headingLevel = 2 }: { report: DiagnosticReport
                   status === 'unavailable' ? 'font-normal text-slate-400 italic dark:text-slate-500' : '',
                 ].join(' ')}
               >
-                <span>{value}</span>
+                <span className="min-w-0 max-w-full">{value}</span>
                 {status === 'estimated' && <StatusBadge status="estimated" />}
               </p>
             </div>

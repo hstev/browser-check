@@ -21,7 +21,7 @@ export function buildJson(report: DiagnosticReport, identifier: CustomIdentifier
   }
   return {
     schemaVersion: JSON_SCHEMA_VERSION,
-    app: { name: 'Browser Diagnostics', version: report.meta.appVersion },
+    app: { name: 'Browser Check', version: report.meta.appVersion },
     diagnosticId: report.meta.diagnosticId,
     generatedAt: report.meta.generatedAt,
     customIdentifier: {
@@ -47,8 +47,8 @@ export function sanitizeFilenamePart(input: string, maxLength = 60): string {
     .replace(/[-_.]+$/g, '');
 }
 
-/** `browser-diagnostics-INC-2026-1042.json`, falling back to the diagnostic ID. */
+/** `browser-check-INC-2026-1042.json`, falling back to the diagnostic ID. */
 export function buildFilename(identifierValue: string, diagnosticId: string, extension: 'json' | 'png'): string {
   const part = sanitizeFilenamePart(identifierValue) || sanitizeFilenamePart(diagnosticId) || 'report';
-  return `browser-diagnostics-${part}.${extension}`;
+  return `browser-check-${part}.${extension}`;
 }
